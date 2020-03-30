@@ -67,23 +67,23 @@ public class GiveHugsCommand extends EssentialCommand {
             case "hug":
                 amountToYeet = 2;
             case "hugs":
-                amountToYeet = 5;
+                amountToYeet = 3;
             case "virtual_hugs":
                 amountToYeet = 1;
-            default:
-                Fools.yourWrong(fool, "&cno you don't");
         }
 
         Fools.yourWrong(fool, "&a&lSending the Hug!");
 
         amountToYeet *= howMany;
+        amountToYeet += Fools.randomNumber(1, 3);
+
         if (fool.experienceLevel < amountToYeet) {
             fool.playSound(SoundEvents.ENTITY_VILLAGER_NO, 3, 1);
-            Fools.yourWrong(fool, "&cYOU DO NOT HAVE ENOUGH EXPERIENCE! YOU NEED AT LEAST " + amountToYeet + " LEVELS");
+            Fools.yourWrong(fool, "&cYOU DON'T HAVE ENOUGH EXPERIENCE! YOU NEED AT LEAST " + amountToYeet + " LEVELS");
             return SINGLE_FAILED;
         }
 
-        fool.experienceLevel -= amountToYeet;
+        fool.addExperienceLevels(-amountToYeet);
         Fools.makeThemUnderstand(fool, new LiteralText((howMany == 1 ? "Hug" : "Hugs") + " Sent! <3").formatted(Formatting.LIGHT_PURPLE));
         fool.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 3, 1);
 
