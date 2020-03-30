@@ -16,6 +16,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import org.kilocraft.essentials.Fools;
 import org.kilocraft.essentials.api.command.EssentialCommand;
+import org.kilocraft.essentials.commands.CommandUtils;
 
 public class GiveHugsCommand extends EssentialCommand {
     public GiveHugsCommand() {
@@ -25,18 +26,20 @@ public class GiveHugsCommand extends EssentialCommand {
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         argumentBuilder.then(
-                argument("targets", EntityArgumentType.players()).then(
-                        argument("item", ItemStackArgumentType.itemStack())
-                                .executes(this::no_U)
+                argument("targets", EntityArgumentType.players())
                         .then(
                                 argument("hugType", StringArgumentType.word())
                                         .suggests((context, builder) -> CommandSource.suggestMatching(Lists.newArrayList("hug", "hugs", "virtual_hugs", "minecraft:hug", "minecraft:hugs", "minecraft:virtual_hugs"), builder))
                                         .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"), StringArgumentType.getString(ctx, "hugType"), 1))
-                                .then(
-                                        argument("amount", IntegerArgumentType.integer(0, 69))
-                                                .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"), StringArgumentType.getString(ctx, "hugType"), IntegerArgumentType.getInteger(ctx, "amount")))
-                                )
-                        ).then(
+                                        .then(
+                                                argument("amount", IntegerArgumentType.integer(0, 69))
+                                                        .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"), StringArgumentType.getString(ctx, "hugType"), IntegerArgumentType.getInteger(ctx, "amount")))
+                                        )
+                        )
+                        .then(
+                                argument("item", ItemStackArgumentType.itemStack())
+                                .executes(this::no_U)
+                        .then(
                                 argument("amount", IntegerArgumentType.integer(0, 69))
                                         .executes(this::no_U)
                         )
@@ -51,6 +54,12 @@ public class GiveHugsCommand extends EssentialCommand {
 
     private int giveHugs(ServerCommandSource src, ServerPlayerEntity target, String input, int howMany) throws CommandSyntaxException {
         ServerPlayerEntity fool = src.getPlayer();
+
+        if (CommandUtils.areTheSame(src, target)) {
+            Fools.yourWrong(fool, "&cYou tried buddy...");
+            return -0;
+        }
+
         String type = input.replace("minecraft:", "");
         int amountToYeet = 0;
 
@@ -69,14 +78,14 @@ public class GiveHugsCommand extends EssentialCommand {
 
         amountToYeet *= howMany;
         if (fool.experienceLevel < amountToYeet) {
-            fool.playSound(SoundEvents.ENTITY_VILLAGER_NO, 1, 1);
-            Fools.yourWrong(fool, "&c&lYOU DO NOT HAVE ENOUGH EXPERIENCE LEVELS! YOU NEED AT LEAST" + amountToYeet);
+            fool.playSound(SoundEvents.ENTITY_VILLAGER_NO, 3, 1);
+            Fools.yourWrong(fool, "&cYOU DO NOT HAVE ENOUGH EXPERIENCE! YOU NEED AT LEAST " + amountToYeet + " LEVELS");
             return SINGLE_FAILED;
         }
 
         fool.experienceLevel -= amountToYeet;
         Fools.makeThemUnderstand(fool, new LiteralText((howMany == 1 ? "Hug" : "Hugs") + " Sent! <3").formatted(Formatting.LIGHT_PURPLE));
-        fool.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 1, 1);
+        fool.playSound(SoundEvents.UI_TOAST_CHALLENGE_COMPLETE, 3, 1);
 
         Fools.yourWrong(target,  "&b" + this.getOnlineUser(fool).getFormattedDisplayName() + "&r&d Has sent you " + (howMany == 1 ? "a Hug" : howMany + " Hugs"));
         Fools.yourWrong(target, "&b&oThey've used " + amountToYeet + " levels of their experience for that!");
