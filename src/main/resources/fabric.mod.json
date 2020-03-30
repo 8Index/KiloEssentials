@@ -1,16 +1,17 @@
 {
   "schemaVersion": 1,
-  "id": "kilo_essentials",
+  "id": "pound_essentials",
   "version": "${version}",
 
-  "name": "KiloEssentials",
-  "description": "Server management made easy with this mod",
+  "name": "PoundEssentials",
+  "description": "Server management made easy with this mod -no u",
   "authors": [
-    "CODY_AI",
+    "Spooky guy",
+    "CODy-aI",
     "MCrafterzz",
-    "GiantNuker",
-    "i509VCB",
-    "Thanks to DrexHD"
+    "Giant Nuker",
+    "The Orange Traffic Cone",
+    "Thanks to DredHX"
   ],
 
   "license": "MIT",

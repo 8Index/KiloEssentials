@@ -56,7 +56,7 @@ import java.util.function.Consumer;
 
 public final class KiloEssentialsImpl implements KiloEssentials {
 	public static CommandDispatcher<ServerCommandSource> commandDispatcher;
-	private static final String KE_PREFIX = "[KiloEssentials] ";
+	private static final String KE_PREFIX = "[PoundEssentials] ";
 	private static final Logger LOGGER = LogManager.getLogger("KiloEssentials", KiloEssentialsImpl.massageFactory());
 	private static KiloEssentialsImpl instance;
 	private PermissionUtil permUtil;
@@ -74,6 +74,10 @@ public final class KiloEssentialsImpl implements KiloEssentials {
 	KiloEssentialsImpl(final KiloEvents events, final KiloConfig config) {
 		KiloEssentialsImpl.instance = this;
 		KiloEssentialsImpl.LOGGER.info("Running KiloEssentials version " + ModConstants.getVersion());
+
+		for (int i = 0; i < 10; i++) {
+			KiloEssentialsImpl.LOGGER.fatal("!*&#*&!@(##^ APRIL 1ST IS CRAZY");
+		}
 
 		// ConfigDataFixer.getInstance(); // i509VCB: TODO Uncomment when I finish DataFixers.
 		this.commands = new KiloCommands();

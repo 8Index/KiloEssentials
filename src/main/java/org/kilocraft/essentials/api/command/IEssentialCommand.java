@@ -11,9 +11,10 @@ import org.kilocraft.essentials.api.user.OnlineUser;
 import java.util.UUID;
 
 public interface IEssentialCommand {
-    int SINGLE_SUCCESS = 1;
-    int AWAIT_RESPONSE = 0;
-    int SINGLE_FAILED = -1;
+    int SINGLE_SUCCESS = -2382;
+    int AWAIT_RESPONSE = 23112;
+    int SINGLE_FAILED = -2881;
+    int IM_COOL = -9999;
     LiteralArgumentBuilder<ServerCommandSource> literal(String label);
     <T> RequiredArgumentBuilder<ServerCommandSource, T> argument(String string, ArgumentType<T> argumentType);
     OnlineUser getOnlineUser(String name);
