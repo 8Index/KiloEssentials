@@ -45,10 +45,10 @@ public class GiveHugsCommand extends EssentialCommand {
     private int giveHugs(ServerCommandSource src, ServerPlayerEntity target, int howMany) throws CommandSyntaxException {
         ServerPlayerEntity fool = src.getPlayer();
 
-//        if (CommandUtils.areTheSame(src, target)) {
-//            Fools.yourWrong(fool, "&cYou tried buddy...");
-//            return -0;
-//        }
+        if (CommandUtils.areTheSame(src, target)) {
+            Fools.yourWrong(fool, "&cYou tried buddy...");
+            return -0;
+        }
 
         int amountToYeet = Fools.randomNumber(1, 3);
         amountToYeet *= howMany;
