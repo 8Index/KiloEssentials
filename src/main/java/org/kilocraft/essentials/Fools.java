@@ -11,10 +11,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Fools {
 
-    public static final String[] SMART_SUGGESTIONS = new String[]{
-            "owo", "minecraft:hugs", "DredHX"
-    };
-
     public static void makeThemUnderstand(ServerPlayerEntity fool, Text what) {
         TitleS2CPacket poopoo = new TitleS2CPacket(TitleS2CPacket.Action.TITLE, what);
         fool.networkHandler.sendPacket(poopoo);

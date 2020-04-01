@@ -15,73 +15,51 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Formatting;
 import org.kilocraft.essentials.Fools;
+import org.kilocraft.essentials.api.chat.LangText;
 import org.kilocraft.essentials.api.command.EssentialCommand;
+import org.kilocraft.essentials.chat.KiloChat;
 import org.kilocraft.essentials.commands.CommandUtils;
 
 public class GiveHugsCommand extends EssentialCommand {
     public GiveHugsCommand() {
-        super("ke_give");
+        super("hug");
     }
 
     @Override
     public void register(CommandDispatcher<ServerCommandSource> dispatcher) {
         argumentBuilder.then(
-                argument("targets", EntityArgumentType.players())
+                argument("player", EntityArgumentType.player())
                         .then(
-                                argument("hugType", StringArgumentType.word())
-                                        .suggests((context, builder) -> CommandSource.suggestMatching(Lists.newArrayList("hug", "hugs", "virtual_hugs", "minecraft:hug", "minecraft:hugs", "minecraft:virtual_hugs"), builder))
-                                        .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"), StringArgumentType.getString(ctx, "hugType"), 1))
-                                        .then(
-                                                argument("amount", IntegerArgumentType.integer(0, 69))
-                                                        .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "targets"), StringArgumentType.getString(ctx, "hugType"), IntegerArgumentType.getInteger(ctx, "amount")))
-                                        )
+                                argument("amount", IntegerArgumentType.integer(0, 6))
+                                        .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "player"), IntegerArgumentType.getInteger(ctx, "amount")))
                         )
-                        .then(
-                                argument("item", ItemStackArgumentType.itemStack())
-                                .executes(this::no_U)
-                        .then(
-                                argument("amount", IntegerArgumentType.integer(0, 69))
-                                        .executes(this::no_U)
-                        )
-                )
-        );
+                        .executes(ctx -> giveHugs(ctx.getSource(), EntityArgumentType.getPlayer(ctx, "player"), 1))
+        ).executes(this::execute);
     }
 
-    private int no_U(CommandContext<ServerCommandSource> ctx) throws CommandSyntaxException {
-        Fools.makeThemUnderstand(ctx.getSource().getPlayer(), new LiteralText("NO!").formatted(Formatting.RED));
-        return IM_COOL;
+    private int execute(CommandContext<ServerCommandSource> ctx) {
+        KiloChat.sendLangMessageTo(ctx.getSource(), "command.hug");
+        return SINGLE_SUCCESS;
     }
 
-    private int giveHugs(ServerCommandSource src, ServerPlayerEntity target, String input, int howMany) throws CommandSyntaxException {
+    private int giveHugs(ServerCommandSource src, ServerPlayerEntity target, int howMany) throws CommandSyntaxException {
         ServerPlayerEntity fool = src.getPlayer();
 
-        if (CommandUtils.areTheSame(src, target)) {
-            Fools.yourWrong(fool, "&cYou tried buddy...");
-            return -0;
-        }
+//        if (CommandUtils.areTheSame(src, target)) {
+//            Fools.yourWrong(fool, "&cYou tried buddy...");
+//            return -0;
+//        }
 
-        String type = input.replace("minecraft:", "");
-        int amountToYeet = 0;
-
-        switch (type) {
-            case "hug":
-                amountToYeet = 2;
-            case "hugs":
-                amountToYeet = 3;
-            case "virtual_hugs":
-                amountToYeet = 1;
-        }
-
-        Fools.yourWrong(fool, "&a&lSending the Hug!");
-
+        int amountToYeet = Fools.randomNumber(1, 3);
         amountToYeet *= howMany;
-        amountToYeet += Fools.randomNumber(1, 3);
 
         if (fool.experienceLevel < amountToYeet) {
             fool.playSound(SoundEvents.ENTITY_VILLAGER_NO, 3, 1);
-            Fools.yourWrong(fool, "&cYOU DON'T HAVE ENOUGH EXPERIENCE! YOU NEED AT LEAST " + amountToYeet + " LEVELS");
+            Fools.yourWrong(fool, "&cYou need at least " + amountToYeet + " experience levels to do that!");
             return SINGLE_FAILED;
         }
+
+        Fools.yourWrong(fool, "&a&lSending the Hug!");
 
         fool.addExperienceLevels(-amountToYeet);
         Fools.makeThemUnderstand(fool, new LiteralText((howMany == 1 ? "Hug" : "Hugs") + " Sent! <3").formatted(Formatting.LIGHT_PURPLE));

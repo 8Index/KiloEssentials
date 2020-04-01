@@ -31,7 +31,6 @@ public class LiteralCommandModified {
         add("ke_ban");
         add("ke_kick");
         add("ke_gamerule");
-        add("ke_give");
     }};
 
     private static List<String> vanillaCommandsToRename = new ArrayList<String>(){{
@@ -49,7 +48,6 @@ public class LiteralCommandModified {
         add("time");
         add("enchant");
         add("locatebiome");
-        add("give");
     }};
 
     public static boolean isVanillaCommand(String nodeName) {
